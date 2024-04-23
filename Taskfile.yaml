@@ -1,0 +1,29 @@
+version: '3'
+
+tasks:
+  img:
+    cmds:
+      - docker images 
+    silent: true
+
+  run-*:
+    vars:
+      IMG: '{{index .MATCH 0}}'
+    cmds:
+      - docker run --rm -it {{.IMG}} sh
+
+  bld-*:
+    vars:
+      IMG: '{{index .MATCH 0}}'
+    cmds:
+      - docker build . -t {{.IMG}}
+
+  rm-*:
+    vars:
+      IMG: '{{index .MATCH 0}}'
+    cmds:
+      - docker rmi {{.IMG}}
+
+  socks:
+    cmds:
+      - ssh -i ~/.ssh/id_rsa -D 1337 -f -C -q -N bdereims@forty-two
